@@ -8,7 +8,7 @@ on:
       - '.github/workflows/apple-build.yml'
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   macos:
     runs-on: macos-15
@@ -83,3 +83,11 @@ jobs:
             ${{ runner.temp }}/onecopy-ios-device/SHA256SUMS.txt
             ${{ runner.temp }}/onecopy-ios-device/README.txt
           if-no-files-found: error
+      - name: Publish iPhone QA IPA to GitHub Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="ios-qa-${GITHUB_SHA:0:8}"
+          IPA="$RUNNER_TEMP/onecopy-ios-device/ONECOPY-iPhone-UNSIGNED-NOT-INSTALLABLE.ipa"
+          NOTES="ONECOPY iOS 0.3 QA. This IPA is UNSIGNED. A valid Apple signature is required for installation. For testing only. Do not use mass deletion on irreplaceable data."
+          gh release create "$TAG" "$IPA" --target "$GITHUB_SHA" --title "ONECOPY iPhone QA 0.3 (${GITHUB_SHA:0:8})" --notes "$NOTES" --prerelease
