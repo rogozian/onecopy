@@ -26,28 +26,54 @@ enum FolderScanner {
         let modified: Date?
     }
 
+    /// Scan all user-authorized folders as ONE set, so duplicates located
+    /// in different selected folders can also be found. Never escape the
+    /// security scopes supplied by UIDocumentPickerViewController.
     static func scan(_ folder: URL) throws -> FolderScanReport {
-        guard let e = FileManager.default.enumerator(at: folder,
-            includingPropertiesForKeys: Array(keys),
-            options: [.skipsHiddenFiles, .skipsPackageDescendants],
-            errorHandler: { _, _ in true }) else { throw FolderError.unavailable }
+        try scan([folder])
+    }
+
+    static func scan(_ folders: [URL]) throws -> FolderScanReport {
+        guard !folders.isEmpty else { throw FolderError.unavailable }
         var report = FolderScanReport()
         var bySize: [Int64: [URL]] = [:]
-        for case let item as URL in e {
-            guard let v = try? item.resourceValues(forKeys: keys) else {
+        var visited: Set<String> = []
+
+        for folder in folders {
+            guard let e = FileManager.default.enumerator(
+                at: folder,
+                includingPropertiesForKeys: Array(keys),
+                options: [.skipsHiddenFiles, .skipsPackageDescendants],
+                errorHandler: { _, _ in
+                    report.skipped += 1
+                    return true
+                }
+            ) else {
                 report.skipped += 1
                 continue
             }
-            if v.isSymbolicLink == true || v.isPackage == true { e.skipDescendants(); report.skipped += 1; continue }
-            if v.isRegularFile != true { continue }
-            report.enumerated += 1
-            guard v.isUbiquitousItem != true,
-                  v.volumeIsLocal == true,
-                  let size = v.fileSize else {
-                report.skipped += 1
-                continue
+            for case let item as URL in e {
+                guard let v = try? item.resourceValues(forKeys: keys) else {
+                    report.skipped += 1
+                    continue
+                }
+                if v.isSymbolicLink == true || v.isPackage == true {
+                    e.skipDescendants()
+                    report.skipped += 1
+                    continue
+                }
+                if v.isRegularFile != true { continue }
+                let identity = item.standardizedFileURL.path
+                guard visited.insert(identity).inserted else { continue }
+                report.enumerated += 1
+                guard v.isUbiquitousItem != true,
+                      v.volumeIsLocal == true,
+                      let size = v.fileSize else {
+                    report.skipped += 1
+                    continue
+                }
+                bySize[Int64(size), default: []].append(item)
             }
-            bySize[Int64(size), default: []].append(item)
         }
         for (size, matches) in bySize where matches.count > 1 {
             var hashed: [String: [URL]] = [:]
