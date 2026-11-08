@@ -51,3 +51,12 @@ node --check scan-engine.mjs
 ### Установка через SideInstaller (iPhone, без Mac)
 
 [**Пошаговая страница ONECOPY**](https://rogozian.github.io/onecopy/install.html) предлагает установку через `sideinstaller://install?url=...` после установки официального SideInstaller. Источник IPA — [наш GitHub Release](https://github.com/rogozian/onecopy/releases/tag/ios-qa-0.3). Если официальный сайт показывает 0 действующих общих сертификатов, стандартный bootstrap SideInstaller недоступен; не используйте неофициальные зеркала. Подпись и проверка на реальном iPhone остаются обязательными, тестовая IPA сама по себе не устанавливается.
+
+## Официальный каталог ONECOPY для AltStore / SideStore
+
+- Каталог: https://rogozian.github.io/onecopy/altsource.json
+- Добавить в AltStore: `altstore://source?url=https://rogozian.github.io/onecopy/altsource.json`
+- Добавить в SideStore: `sidestore://source?url=https://rogozian.github.io/onecopy/altsource.json`
+- IPA: https://github.com/rogozian/onecopy/releases/download/ios-qa-0.3/ONECOPY-iPhone-UNSIGNED-NOT-INSTALLABLE.ipa (неподписанная QA 0.3, требуется действующая подпись для установки).
+
+Мы **не копируем и не распространяем AltLoad**: лицензия автора запрещает переиздание и зеркалирование. Его можно установить только из [официального репозитория](https://github.com/mirazbakis/AltLoad), затем с помощью AltStore/SideStore импортировать собственный каталог ONECOPY. Каталог не решает первоначальную установку AltLoad и не подтверждает безопасность массового удаления.

@@ -1,0 +1,41 @@
+{
+  "name": "ONECOPY",
+  "identifier": "com.onecopy.opensource",
+  "subtitle": "Официальные версии ONECOPY для iPhone",
+  "description": "Каталог оригинальных тестовых сборок ONECOPY из GitHub rogozian/onecopy. Для установки требуется AltStore Classic или SideStore и действительная подпись Apple.",
+  "iconURL": "https://rogozian.github.io/onecopy/assets/icon-512.png",
+  "website": "https://github.com/rogozian/onecopy",
+  "tintColor": "#4054E8",
+  "featuredApps": [
+    "com.onecopy.mobile"
+  ],
+  "apps": [
+    {
+      "name": "ONECOPY",
+      "bundleIdentifier": "com.onecopy.mobile",
+      "developerName": "ONECOPY",
+      "subtitle": "Поиск точных дубликатов · тестовая версия",
+      "localizedDescription": "Нативный сканер точных дубликатов для разрешённой медиатеки «Фото» и выбранных папок «Файлов». Группировка и просмотр совпадений. Массовое удаление требует подтверждения iOS. Версия QA — ещё не проверена на физическом iPhone; не удаляйте незаменимые данные.",
+      "iconURL": "https://rogozian.github.io/onecopy/assets/icon-512.png",
+      "tintColor": "#4054E8",
+      "category": "utilities",
+      "versions": [
+        {
+          "version": "0.3",
+          "buildVersion": "3",
+          "date": "2026-11-09",
+          "localizedDescription": "ONECOPY 0.3 QA. Объединённый экран сканирования, просмотр фото/видео, несколько папок, пакетная выборка. Подпись IPA обязательна; испытания на настоящем iPhone не завершены.",
+          "downloadURL": "https://github.com/rogozian/onecopy/releases/download/ios-qa-0.3/ONECOPY-iPhone-UNSIGNED-NOT-INSTALLABLE.ipa",
+          "size": 425151,
+          "minOSVersion": "17.0"
+        }
+      ],
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {
+          "NSPhotoLibraryUsageDescription": "ONECOPY проверяет оригиналы фото и видео, чтобы находить побайтово одинаковые копии. Удаление возможно только по вашему выбору и с подтверждением системы."
+        }
+      }
+    }
+  ]
+}

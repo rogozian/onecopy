@@ -5,6 +5,7 @@ on:
     paths:
       - 'index.html'
       - 'install.html'
+      - 'altsource.json'
       - 'style.css'
       - 'app.mjs'
       - 'scan-engine.mjs'
@@ -45,10 +46,11 @@ jobs:
       - name: Prepare only static published files
         run: |
           mkdir -p _site/assets
-          cp index.html install.html style.css app.mjs scan-engine.mjs sw.js manifest.webmanifest _site/
+          cp index.html install.html altsource.json style.css app.mjs scan-engine.mjs sw.js manifest.webmanifest _site/
           cp assets/icon.svg assets/icon-192.png assets/icon-512.png _site/assets/
           touch _site/.nojekyll
-          test -s _site/index.html && test -s _site/install.html && test -s _site/app.mjs
+          node -e 'const s=require("./altsource.json"); if(s.apps.length !== 1 || s.apps[0].versions[0].downloadURL !== "https://github.com/rogozian/onecopy/releases/download/ios-qa-0.3/ONECOPY-iPhone-UNSIGNED-NOT-INSTALLABLE.ipa" || s.apps[0].appPermissions.privacy.NSPhotoLibraryUsageDescription.length<20) process.exit(1)'
+          test -s _site/index.html && test -s _site/install.html && test -s _site/altsource.json && test -s _site/app.mjs
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
