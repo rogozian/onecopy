@@ -56,6 +56,25 @@ jobs:
           shasum -a 256 ONECOPY-iPhone-UNSIGNED-NOT-INSTALLABLE.ipa > SHA256SUMS.txt
           unzip -t ONECOPY-iPhone-UNSIGNED-NOT-INSTALLABLE.ipa
           echo 'Unsigned: cannot install directly on a physical iPhone without Apple provisioning/signing.' > README.txt
+      - name: Launch ONECOPY in iPhone Simulator
+        timeout-minutes: 10
+        run: |
+          SIM_UDID="$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin)["devices"]; print(next((x["udid"] for devices in d.values() for x in devices if x["name"].startswith("iPhone") and x["state"]=="Shutdown"), ""))')"
+          test -n "$SIM_UDID"
+          xcrun simctl boot "$SIM_UDID"
+          xcrun simctl bootstatus "$SIM_UDID" -b
+          xcrun simctl install "$SIM_UDID" "$RUNNER_TEMP/onecopy-ios-build/Build/Products/Release-iphonesimulator/ONECOPY.app"
+          xcrun simctl launch "$SIM_UDID" com.onecopy.mobile
+          sleep 5
+          mkdir -p "$RUNNER_TEMP/onecopy-simulator"
+          xcrun simctl io "$SIM_UDID" screenshot "$RUNNER_TEMP/onecopy-simulator/ONECOPY-start-screen.png"
+          test -s "$RUNNER_TEMP/onecopy-simulator/ONECOPY-start-screen.png"
+          xcrun simctl shutdown "$SIM_UDID"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ONECOPY-iOS-Simulator-QA-screenshot
+          path: ${{ runner.temp }}/onecopy-simulator/ONECOPY-start-screen.png
+          if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:
           name: ONECOPY-iPhone-UNSIGNED-NOT-INSTALLABLE
