@@ -1,0 +1,17 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { detectDuplicates, identicalBytes, sampleFingerprint } from '../scan-engine.mjs';
+let n=0;
+const make=(name,body)=>({id:++n,file:new File([body],name),path:name});
+const scan=(entries)=>detectDuplicates(entries);
+test('same bytes under different names are duplicates',async()=>{const x=await scan([make('a.jpg','abc'),make('b.png','abc')]);assert.equal(x.groups.length,1);assert.equal(x.duplicates,1);});
+test('one byte difference is not duplicate',async()=>{const x=await scan([make('a','abcd'),make('b','abce')]);assert.equal(x.groups.length,0);});
+test('different sizes not duplicate',async()=>{const x=await scan([make('a','a'),make('b','aa')]);assert.equal(x.groups.length,0);});
+test('empty files are identical',async()=>{const x=await scan([make('a',''),make('b','')]);assert.equal(x.groups.length,1);});
+test('one file yields no duplicate group',async()=>{const x=await scan([make('a','a')]);assert.equal(x.groups.length,0);});
+test('two groups with distinct content',async()=>{const x=await scan([make('a','foo'),make('b','foo'),make('c','bar'),make('d','bar')]);assert.equal(x.groups.length,2);});
+test('same sampled ends, distinct middle: final full bytes rejects',async()=>{const a=new Uint8Array(3*1024*1024).fill(65),b=a.slice();b[1000000]=66;const x=await scan([make('a',a),make('b',b)]);assert.equal(x.groups.length,0);});
+test('large matching files equal',async()=>{const a=new Uint8Array(3*1024*1024).fill(123);const x=await scan([make('a',a),make('b',a)]);assert.equal(x.groups.length,1);});
+test('equal size and fingerprint does not itself establish duplicate',async()=>{const a=new Uint8Array(3*1024*1024).fill(65),b=a.slice();b[1000000]=66;const x=await Promise.all([sampleFingerprint(new File([a],'a')),sampleFingerprint(new File([b],'b'))]);assert.equal(x[0],x[1]);assert.equal(await identicalBytes(new File([a],'a'),new File([b],'b')),false);});
+test('abort is honored',async()=>{const ac=new AbortController();ac.abort();await assert.rejects(detectDuplicates([make('a','foo'),make('b','foo')],{signal:ac.signal}),{name:'AbortError'});});
+test('no duplicate savings for unique files',async()=>{const x=await scan([make('a','foo'),make('b','bar')]);assert.equal(x.duplicatedBytes,0);});

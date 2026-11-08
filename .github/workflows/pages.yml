@@ -1,0 +1,63 @@
+name: ONECOPY — проверка и веб-приложение
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'style.css'
+      - 'app.mjs'
+      - 'scan-engine.mjs'
+      - 'sw.js'
+      - 'manifest.webmanifest'
+      - 'assets/**'
+      - 'tests/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: onecopy-pages
+  cancel-in-progress: true
+jobs:
+  test-and-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Exact-byte scanner tests
+        run: node --test tests/scan.test.mjs
+      - name: JavaScript syntax
+        run: |
+          node --check app.mjs
+          node --check scan-engine.mjs
+          node --check sw.js
+      - name: Enforce no uploads from the scanner
+        run: |
+          if grep -En '\b(fetch|XMLHttpRequest|sendBeacon|WebSocket)\b' app.mjs scan-engine.mjs; then
+            echo "Unexpected network API in scanner!" >&2
+            exit 1
+          fi
+      - name: Prepare only static published files
+        run: |
+          mkdir -p _site/assets
+          cp index.html style.css app.mjs scan-engine.mjs sw.js manifest.webmanifest _site/
+          cp assets/icon.svg assets/icon-192.png assets/icon-512.png _site/assets/
+          touch _site/.nojekyll
+          test -s _site/index.html && test -s _site/app.mjs
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+  deploy:
+    needs: test-and-package
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy on GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

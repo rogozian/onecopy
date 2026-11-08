@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f8f9fe">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="ONECOPY">
+  <meta name="description" content="ONECOPY — проверка точных дубликатов файлов локально на iPhone. Ни байта не отправляется на сервер.">
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./assets/icon-192.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./style.css">
+  <title>ONECOPY — одно касание, точные копии</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-glyph" aria-hidden="true"><svg viewBox="0 0 26 26" fill="none"><rect x="7.3" y="7.3" width="15.2" height="15.2" rx="5" stroke="currentColor" stroke-width="2"/><path d="M16.8 3.5h-9A4.3 4.3 0 0 0 3.5 7.8v8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>ONECOPY<span class="brand-period">.</span></div>
+      <div class="top-private"><span class="live-dot"></span> Локально</div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="intro">
+        <div class="eyebrow"><span class="eyebrow-line"></span> ОЧИСТИ ЛИШНЕЕ · СОХРАНИ НУЖНОЕ</div>
+        <h1 id="intro">Памяти больше.<br><span>Копий меньше.</span></h1>
+        <p class="hero-lead">Ищем только абсолютно одинаковые файлы. Даже если их переименовали.</p>
+        <div class="scanner-frame" id="scanner-frame">
+          <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="orbit orbit-c"></div>
+          <button id="scan-btn" class="scan-button" type="button" aria-describedby="scan-description">
+            <span class="scan-button-shine"></span>
+            <svg class="scan-icon" viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect x="10" y="10" width="28" height="28" rx="9" stroke="currentColor" stroke-width="2.8"/><path d="M17 6V3m14 3V3M17 45v-3m14 3v-3M6 17H3m3 14H3m42-14h-3m3 14h-3" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/><path d="m18 24 4.5 4.5L31 19" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="scan-button-title">СКАНИРОВАТЬ</span><span class="scan-button-subtitle" id="scan-button-subtitle">Нажми, чтобы начать</span>
+          </button>
+        </div>
+        <p id="scan-description" class="below-scan">Первое нажатие откроет выбор файлов на iPhone.</p>
+        <div class="mini-points"><span><svg viewBox="0 0 20 20" fill="none"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> Без загрузки в облако</span><span><svg viewBox="0 0 20 20" fill="none"><path d="M10 2.5 17 5v5c0 4.8-3.7 7.1-7 8-3.3-.9-7-3.2-7-8V5l7-2.5Z" stroke="currentColor" stroke-width="1.5"/></svg> Побайтовая проверка</span></div>
+      </section>
+
+      <section class="source-strip" aria-label="Тип материала"><span>Проверять:</span><button id="source-photos" type="button" class="source-choice selected">Фото и видео</button><button id="source-files" type="button" class="source-choice">Любые файлы</button></section>
+      <input type="file" id="photos-picker" multiple accept="image/*,video/*" class="visually-hidden" aria-label="Выбрать фотографии и видео">
+      <input type="file" id="files-picker" multiple class="visually-hidden" aria-label="Выбрать любые файлы">
+
+      <section id="scan-status" class="status-card hidden" aria-live="polite">
+        <div class="section-kicker">ПРОВЕРКА</div>
+        <div class="status-line"><strong id="status-title">Считываем файлы</strong><span id="status-percent">0%</span></div>
+        <div class="progress-track"><div id="progress-fill"></div></div>
+        <p id="status-details">Сравниваем только выбранные материалы</p>
+        <button type="button" id="cancel-btn" class="quiet-action">Отменить</button>
+      </section>
+
+      <section id="results" class="results hidden" aria-live="polite">
+        <div class="results-title-row"><div><div class="section-kicker">РЕЗУЛЬТАТЫ СКАНИРОВАНИЯ</div><h2 id="results-headline">Найдены дубли</h2></div><div class="result-check" aria-hidden="true">✓</div></div>
+        <div class="stats-grid"><div class="stat"><span>Файлов проверено</span><strong id="stat-files">0</strong></div><div class="stat"><span>Лишних копий</span><strong id="stat-copies">0</strong></div><div class="stat stat-wide"><span>Объём найденных повторов*</span><strong id="stat-space">0 МБ</strong></div></div>
+        <div id="results-empty" class="empty-state hidden"><span class="empty-check">✓</span><h3>Совпадений нет</h3><p>В выбранных материалах точных копий не обнаружено.</p></div>
+        <div id="groups" class="groups"></div>
+        <div id="result-actions" class="result-actions hidden">
+          <p class="result-action-desc">В каждой группе оставляем один экземпляр. Остальные отмечаем как кандидаты на ручное удаление.</p>
+          <button type="button" id="prepare-btn" class="primary-action">Подготовить список копий <span>↗</span></button>
+          <button type="button" id="add-more-btn" class="secondary-action">+ Проверить ещё файлы</button>
+        </div>
+        <div id="read-errors" class="read-errors hidden"></div>
+        <p class="stat-note">* Это размер повторяющихся данных, а не гарантированный объём освобождаемой памяти.</p>
+      </section>
+
+      <section id="plan" class="plan hidden" aria-live="polite"><div class="plan-heading"><div class="section-kicker">ПЛАН ОЧИСТКИ</div><h2>Что делать с копиями</h2><p>Проверка завершена. Мы отметили файлы, которые совпадают с выбранным оригиналом.</p></div><div id="plan-items"></div><div class="plan-actions"><button type="button" id="copy-plan" class="primary-action">Скопировать список</button><button type="button" id="download-plan" class="secondary-action">Сохранить отчёт .CSV</button></div><div class="limitation">Удаление из «Фото» и «Файлов» Safari не разрешает. ONECOPY ничего не удаляет, а только готовит проверенный список для ручной очистки.</div></section>
+
+      <section class="trust-panel"><span class="trust-icon">✦</span><div><h3>Твои файлы остаются твоими</h3><p>Сравнение выполняется в браузере. Мы не загружаем медиафайлы на сервер, не храним их и не удаляем. Выбирай только те материалы, которые хочешь проверить.</p></div></section>
+    </main>
+    <footer><span>ONECOPY / независимая версия</span><span>Точно. Безопасно. Локально.</span></footer>
+  </div>
+  <script type="module" src="./app.mjs"></script>
+</body>
+</html>

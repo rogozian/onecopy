@@ -1,0 +1,10 @@
+ONECOPY beta (macOS 13+)
+
+1. Drag ONECOPY.app into Applications.
+2. This is an unsigned *QA build*. It has NOT been notarized with Apple Developer ID.
+3. macOS Gatekeeper can block initial launch. Use System Settings > Privacy & Security > Open Anyway only if you intentionally trust this test build. Do not disable Gatekeeper globally.
+4. Start with an expendable test folder. The search is read-only. Moving copies to Trash is opt-in and can still affect apps that rely on fixed paths, regardless of byte identity.
+5. Never empty Trash until you have confirmed that everything you need still works.
+6. ONECOPY does not scan cloud placeholders, system directories, app bundles, and other protected paths.
+
+This is a test build, not a fully validated production release. Apple Developer ID signing and notarization are still needed for friction-free installation.

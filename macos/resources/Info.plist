@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+    <key>CFBundleIdentifier</key><string>app.onecopy.macos</string>
+    <key>CFBundleName</key><string>ONECOPY</string>
+    <key>CFBundleDisplayName</key><string>ONECOPY</string>
+    <key>CFBundleExecutable</key><string>OneCopy</string>
+    <key>CFBundlePackageType</key><string>APPL</string>
+    <key>CFBundleShortVersionString</key><string>0.4.0</string>
+    <key>CFBundleVersion</key><string>1</string>
+    <key>CFBundleIconFile</key><string>ONECOPY.icns</string>
+    <key>LSMinimumSystemVersion</key><string>13.0</string>
+    <key>NSHighResolutionCapable</key><true/>
+    <key>LSApplicationCategoryType</key><string>public.app-category.utilities</string>
+</dict></plist>

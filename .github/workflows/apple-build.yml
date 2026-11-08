@@ -1,0 +1,66 @@
+name: ONECOPY — Apple QA сборки
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ios/**'
+      - 'macos/**'
+      - '.github/workflows/apple-build.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  macos:
+    runs-on: macos-15
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test and package universal macOS QA build
+        run: |
+          cd macos
+          bash scripts/package-macos.sh
+      - name: Verify package
+        run: |
+          cd macos/dist
+          hdiutil verify ONECOPY-macOS-universal-unsigned-QA.dmg
+          lipo -archs ONECOPY.app/Contents/MacOS/OneCopy | grep -q arm64
+          lipo -archs ONECOPY.app/Contents/MacOS/OneCopy | grep -q x86_64
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ONECOPY-macOS-universal-unsigned-QA
+          path: |
+            macos/dist/ONECOPY-macOS-universal-unsigned-QA.dmg
+            macos/dist/ONECOPY-macOS-universal-QA.zip
+            macos/dist/SHA256SUMS.txt
+          if-no-files-found: error
+  ios:
+    runs-on: macos-15
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Core grouping tests
+        run: |
+          swiftc ios/ONECOPY/DuplicateIndex.swift ios/Tests/GroupingSmoke.swift -o /tmp/onecopy-grouping
+          /tmp/onecopy-grouping
+      - name: Compile iPhone simulator and device application (unsigned)
+        run: |
+          xcodebuild -project ios/ONECOPY.xcodeproj -scheme ONECOPY -configuration Release -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath "$RUNNER_TEMP/onecopy-ios-build" CODE_SIGNING_ALLOWED=NO build
+          xcodebuild -project ios/ONECOPY.xcodeproj -scheme ONECOPY -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath "$RUNNER_TEMP/onecopy-ios-build" CODE_SIGNING_ALLOWED=NO build
+          test -f "$RUNNER_TEMP/onecopy-ios-build/Build/Products/Release-iphoneos/ONECOPY.app/Assets.car"
+      - name: Package unsigned IPA (requires subsequent Apple signing)
+        run: |
+          mkdir -p "$RUNNER_TEMP/onecopy-ios-device/Payload"
+          ditto "$RUNNER_TEMP/onecopy-ios-build/Build/Products/Release-iphoneos/ONECOPY.app" "$RUNNER_TEMP/onecopy-ios-device/Payload/ONECOPY.app"
+          cd "$RUNNER_TEMP/onecopy-ios-device"
+          ditto -c -k --keepParent Payload ONECOPY-iPhone-UNSIGNED-NOT-INSTALLABLE.ipa
+          shasum -a 256 ONECOPY-iPhone-UNSIGNED-NOT-INSTALLABLE.ipa > SHA256SUMS.txt
+          unzip -t ONECOPY-iPhone-UNSIGNED-NOT-INSTALLABLE.ipa
+          echo 'Unsigned: cannot install directly on a physical iPhone without Apple provisioning/signing.' > README.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ONECOPY-iPhone-UNSIGNED-NOT-INSTALLABLE
+          path: |
+            ${{ runner.temp }}/onecopy-ios-device/ONECOPY-iPhone-UNSIGNED-NOT-INSTALLABLE.ipa
+            ${{ runner.temp }}/onecopy-ios-device/SHA256SUMS.txt
+            ${{ runner.temp }}/onecopy-ios-device/README.txt
+          if-no-files-found: error

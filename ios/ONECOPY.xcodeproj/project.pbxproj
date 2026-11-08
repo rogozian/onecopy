@@ -1,0 +1,41 @@
+// !$*UTF8*$!
+{
+ archiveVersion = 1;
+ classes = {};
+ objectVersion = 56;
+ objects = {
+		CE3DE46B979910EAAC6E188A = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ONECOPYApp.swift; sourceTree = "<group>"; };
+		27DE0A491E04112DEC147EC7 = {isa = PBXBuildFile; fileRef = CE3DE46B979910EAAC6E188A; };
+		AEACBE1169ADCE31B1822347 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateIndex.swift; sourceTree = "<group>"; };
+		35EE2D64E4CA8E3C92DF4EA9 = {isa = PBXBuildFile; fileRef = AEACBE1169ADCE31B1822347; };
+		BE374580F3E8F452FC41D819 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExactFile.swift; sourceTree = "<group>"; };
+		1C9727BA02EB7CD7DF697CF0 = {isa = PBXBuildFile; fileRef = BE374580F3E8F452FC41D819; };
+		69F6635BBDC32932250D498D = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoScanner.swift; sourceTree = "<group>"; };
+		A9E1629906288842FD1C0AA9 = {isa = PBXBuildFile; fileRef = 69F6635BBDC32932250D498D; };
+		34232BC0FA2961E4A814A19D = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosScreen.swift; sourceTree = "<group>"; };
+		FEE9032F83FD43E6AE52D08B = {isa = PBXBuildFile; fileRef = 34232BC0FA2961E4A814A19D; };
+		AD2A7B47C6520B9A049C673F = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderScanner.swift; sourceTree = "<group>"; };
+		5879E14B3E844F5791F04A52 = {isa = PBXBuildFile; fileRef = AD2A7B47C6520B9A049C673F; };
+		597060D157D8962C5E9943E4 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesScreen.swift; sourceTree = "<group>"; };
+		AE250F32DEB32AB0646F36D6 = {isa = PBXBuildFile; fileRef = 597060D157D8962C5E9943E4; };
+		9CEEC13202AFBF12EE3ABB99 = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+        E5238514AB6E7409F9EC1F07 = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+        07CD1A2CBFD684972D7E05EA = {isa = PBXBuildFile; fileRef = E5238514AB6E7409F9EC1F07; };
+		A8792157CB4F27FB949C035F = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ONECOPY.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8D2DC745BFC63C0D67231CE = {isa = PBXGroup; children = (E17E80AD8E2103CF3FC3FD96, 158EFF22A6EF5F98E381D118, ); sourceTree = "<group>"; };
+		E17E80AD8E2103CF3FC3FD96 = {isa = PBXGroup; children = (CE3DE46B979910EAAC6E188A, AEACBE1169ADCE31B1822347, BE374580F3E8F452FC41D819, 69F6635BBDC32932250D498D, 34232BC0FA2961E4A814A19D, AD2A7B47C6520B9A049C673F, 597060D157D8962C5E9943E4, 9CEEC13202AFBF12EE3ABB99, E5238514AB6E7409F9EC1F07, ); path = ONECOPY; sourceTree = "<group>"; };
+		158EFF22A6EF5F98E381D118 = {isa = PBXGroup; children = (A8792157CB4F27FB949C035F, ); name = Products; sourceTree = "<group>"; };
+		878A52FC5FF6A57D50B7B870 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (27DE0A491E04112DEC147EC7, 35EE2D64E4CA8E3C92DF4EA9, 1C9727BA02EB7CD7DF697CF0, A9E1629906288842FD1C0AA9, FEE9032F83FD43E6AE52D08B, 5879E14B3E844F5791F04A52, AE250F32DEB32AB0646F36D6, ); runOnlyForDeploymentPostprocessing = 0; };
+		41D311A605520FC7B8B9A980 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (07CD1A2CBFD684972D7E05EA, ); runOnlyForDeploymentPostprocessing = 0; };
+		E2AA269EB967A8853A258BFA = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		34A04005BCAF206EEC990BD9 = {isa = PBXNativeTarget; buildConfigurationList = A1C421DAD96DFF096646A753; buildPhases = (878A52FC5FF6A57D50B7B870, E2AA269EB967A8853A258BFA, 41D311A605520FC7B8B9A980, ); buildRules = (); dependencies = (); name = ONECOPY; productName = ONECOPY; productReference = A8792157CB4F27FB949C035F; productType = "com.apple.product-type.application"; };
+		244210E48437B6556980A702 = {isa = PBXProject; attributes = {BuildIndependentTargetsInParallel = YES; LastUpgradeCheck = 1600; TargetAttributes = {34A04005BCAF206EEC990BD9 = {CreatedOnToolsVersion = 16.0; }; }; }; buildConfigurationList = A964DD4136F390AFDF0E5FBA; compatibilityVersion = "Xcode 15.0"; developmentRegion = ru; hasScannedForEncodings = 0; knownRegions = (ru, en, Base, ); mainGroup = C8D2DC745BFC63C0D67231CE; productRefGroup = 158EFF22A6EF5F98E381D118; projectDirPath = ""; projectRoot = ""; targets = (34A04005BCAF206EEC990BD9, ); };
+		73EBF6644258C120893E685D = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; IPHONEOS_DEPLOYMENT_TARGET = 17.0; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; }; name = Debug; };
+		6C7EFF6369083C8E1F2B1994 = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = NO; CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = ONECOPY/Info.plist; IPHONEOS_DEPLOYMENT_TARGET = 17.0; MARKETING_VERSION = 0.2; PRODUCT_BUNDLE_IDENTIFIER = com.onecopy.mobile; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; SWIFT_STRICT_CONCURRENCY = minimal; TARGETED_DEVICE_FAMILY = "1,2"; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; ENABLE_PREVIEWS = YES; } ; name = Debug; };
+		0B0C687DF8B6B8DC790B519C = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; IPHONEOS_DEPLOYMENT_TARGET = 17.0; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; }; name = Release; };
+		DD75E2CB1C510A828AC72D96 = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = NO; CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = ONECOPY/Info.plist; IPHONEOS_DEPLOYMENT_TARGET = 17.0; MARKETING_VERSION = 0.2; PRODUCT_BUNDLE_IDENTIFIER = com.onecopy.mobile; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; SWIFT_STRICT_CONCURRENCY = minimal; TARGETED_DEVICE_FAMILY = "1,2"; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; ENABLE_PREVIEWS = YES; } ; name = Release; };
+		A964DD4136F390AFDF0E5FBA = {isa = XCConfigurationList; buildConfigurations = (73EBF6644258C120893E685D, 0B0C687DF8B6B8DC790B519C, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		A1C421DAD96DFF096646A753 = {isa = XCConfigurationList; buildConfigurations = (6C7EFF6369083C8E1F2B1994, DD75E2CB1C510A828AC72D96, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+ };
+ rootObject = 244210E48437B6556980A702;
+}
