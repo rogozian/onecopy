@@ -1,0 +1,36 @@
+name: ONECOPY — publish verified unsigned iPhone QA
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-iphone-qa.yml'
+  workflow_dispatch:
+permissions:
+  actions: read
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download IPA from previously successful Apple QA run
+        uses: actions/download-artifact@v4
+        with:
+          name: ONECOPY-iPhone-UNSIGNED-NOT-INSTALLABLE
+          run-id: 42530041590
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: onecopy-ipa
+      - name: Verify and publish original unsigned 0.3 build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test -s onecopy-ipa/ONECOPY-iPhone-UNSIGNED-NOT-INSTALLABLE.ipa
+          unzip -t onecopy-ipa/ONECOPY-iPhone-UNSIGNED-NOT-INSTALLABLE.ipa
+          if ! gh release view ios-qa-0.3; then
+            gh release create ios-qa-0.3 \
+              onecopy-ipa/ONECOPY-iPhone-UNSIGNED-NOT-INSTALLABLE.ipa \
+              onecopy-ipa/SHA256SUMS.txt \
+              --target "$GITHUB_SHA" \
+              --title "ONECOPY for iPhone 0.3 — QA unsigned" \
+              --notes "Official source build. Unsigned QA IPA, NOT directly installable on iPhone. Requires signing with a valid Apple provisioning profile. Simulator launch passed on run 42530041590. Not tested on a physical iPhone; do not perform mass deletion of irreplaceable data." \
+              --prerelease
+          fi
