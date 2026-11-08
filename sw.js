@@ -1,4 +1,4 @@
-const CACHE = 'onecopy-independent-1.1';
+const CACHE = 'onecopy-independent-1.2';
 const CORE = ['./', './index.html', './style.css', './app.mjs', './scan-engine.mjs', './manifest.webmanifest', './assets/icon-192.png', './assets/icon-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
