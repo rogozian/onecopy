@@ -14,8 +14,45 @@
 <body><main>
 <header class="top"><div class="brand">◈ ONECOPY</div><div class="tag">iPhone · нативная версия 0.3 QA</div></header>
 <h1>Установка ONECOPY<br>через SideInstaller</h1>
-<p class="intro">Без Mac и без платного аккаунта Apple. Здесь находится <strong>оригинальный IPA из твоего GitHub</strong> и кнопка его импорта через SideInstaller.</p>
+<p class="intro">Несколько способов без Mac, включая бесплатные. Здесь находится <strong>оригинальный IPA из твоего GitHub</strong> и кнопка его импорта через SideInstaller.</p>
 <div class="warning"><strong>Важный статус:</strong> на последней проверенной официальной странице SideInstaller было <strong>0 действующих общих сертификатов</strong>. Пока не появится доступный сертификат, стандартная установка самого SideInstaller может не сработать. Эта страница не обходит ограничение Apple и не устанавливает приложение сама.</div>
+<section class="panel">
+<span class="label">Бесплатная альтернатива №1 · iOS 27</span>
+<h2>AltLoad: установка прямо с iPhone</h2>
+<p>Разработчик AltLoad предлагает <strong>32 варианта подписанной установки</strong> с публичными сертификатами. Действительность каждого на твоём устройстве не подтверждена — если сертификат отозван, установка не запустится.</p>
+<ol>
+<li>В Safari открой официальный <a href="https://mirazbakis.github.io/AltLoad/" rel="noopener noreferrer">AltLoad</a>, прими условия и установи DNS-профиль согласно инструкции автора.</li>
+<li>В блоке «Pick a signed install» попробуй предложенный вариант. Если приложение не установится или не откроется после доверия профилю, этот сертификат может быть отозван.</li>
+<li>Если AltLoad запустился, включи Developer Mode в настройках iPhone, затем Tools → Pair и выполни инструкцию по коду сопряжения.</li>
+<li>Установи бесплатный LocalDevVPN из App Store и включи туннель согласно руководству AltLoad.</li>
+<li>В AltLoad: Install → меню «…» → Install IPA from Files. Выбери скачанный ниже <strong>ONECOPY IPA</strong> и выполни подпись через бесплатный Apple ID. Подпись истекает через 7 дней и требует продления.</li>
+</ol>
+<a class="btn" href="https://mirazbakis.github.io/AltLoad/" rel="noopener noreferrer">Попробовать официальный AltLoad</a>
+<p class="muted">Никакие сертификаты или пароли Apple ID не нужны нашей веб-странице. Используй только оригинальный проект автора — поддельные копии могут красть учётные данные.</p>
+</section>
+<section class="panel">
+<span class="label">Бесплатная альтернатива №2 · без публичных сертификатов</span>
+<h2>iSH + свой бесплатный сертификат Apple</h2>
+<p>Автор SideInstaller разработал самостоятельную процедуру: iSH из App Store собирает подписывающую программу и использует <strong>собственную бесплатную подпись Apple</strong>, чтобы установить SideInstaller и затем ONECOPY. Этот путь не зависит от массово отозванных корпоративных сертификатов, но экспериментальный: сама установка через локальный HTTPS-сервер не подтверждена разработчиком на всех реальных устройствах.</p>
+<ol>
+<li>Установи <a href="https://apps.apple.com/app/id1436902243" rel="noopener noreferrer">iSH из App Store</a>.</li>
+<li>Открой <a href="https://github.com/FrizzleM/SideInstaller/blob/main/ish/README.md" rel="noopener noreferrer">официальную инструкцию автора</a>. Перед запуском ознакомься с кодом, потому что он обрабатывает данные для входа в Apple ID.</li>
+<li>Следуй инструкции iSH. После успешной установки SideInstaller импортируй наш IPA, доступный ниже.</li>
+</ol>
+<a class="btn secondary" href="https://github.com/FrizzleM/SideInstaller/blob/main/ish/README.md" rel="noopener noreferrer">Открыть официальный iSH-способ</a>
+</section>
+<section class="panel">
+<span class="label">Другие проверенные варианты</span>
+<h2>Подписывающие приложения и сертификаты</h2>
+<ul style="padding-left:20px;color:#566580;line-height:1.7;font-size:13px">
+<li><a href="https://usescarlet.com/" rel="noopener noreferrer">Scarlet, сайт разработчика</a>: прямой установщик с общими сертификатами, но текущая работоспособность на iOS 27 не подтверждена. Не путать с неофициальными клонами.</li>
+<li><a href="https://feather.claration.dev/" rel="noopener noreferrer">Feather</a>, <a href="https://github.com/Nyasami/Ksign" rel="noopener noreferrer">KSign</a> и ESign: умеют подписывать IPA прямо на iPhone, но <strong>нужны действительные P12 + provisioning profile</strong>.</li>
+<li><a href="https://github.com/NexSideloading/certificates" rel="noopener noreferrer">NexCerts</a>: общедоступные сертификаты с P12 сейчас помечены как отозванные; несколько действительных сертификатов показаны без P12, поэтому подписать ONECOPY ими нельзя.</li>
+<li><a href="https://github.com/FrizzleM/BreakFree" rel="noopener noreferrer">BreakFree</a>: экспериментальный метод с публичными корпоративными сертификатами и DNS, последняя заявленная проверка — iOS 26.5, работа на iOS 27 не подтверждена.</li>
+<li><a href="https://www.altcert.dev/" rel="noopener noreferrer">AltCert</a> (от €7), <a href="https://flarestore.app/" rel="noopener noreferrer">FlareStore</a> (от ~$3, в зависимости от тарифа) и <a href="https://www.signulous.com/" rel="noopener noreferrer">Signulous</a> ($19,99 в год): коммерческие варианты регистрации iPhone и подписи, без компьютера. Цена и сроки могут измениться; услуги не проверены на нашем устройстве.</li>
+</ul>
+<div class="warning">Не устанавливай сертификат от незнакомого источника только потому, что он отмечен как «Valid»: нужен и подходящий профиль для твоего устройства, и честное происхождение подписанного приложения. После настройки удаляй ненужные DNS/конфигурационные профили.</div>
+</section>
 <section class="panel">
 <span class="label">Шаг 1</span>
 <h2>Установи SideInstaller</h2>
