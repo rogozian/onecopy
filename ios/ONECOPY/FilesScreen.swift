@@ -67,7 +67,7 @@ final class FilesModel: ObservableObject {
 }
 
 struct FilesScreen: View {
-    @StateObject private var model = FilesModel()
+    @ObservedObject var model: FilesModel
     @State private var showingPicker = false
     @State private var preview: FilePreviewTarget?
     @State private var keeperPaths: [String: String] = [:]

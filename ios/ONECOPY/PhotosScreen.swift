@@ -98,7 +98,7 @@ final class PhotosModel: ObservableObject {
 }
 
 struct PhotosScreen: View {
-    @StateObject private var model = PhotosModel()
+    @ObservedObject var model: PhotosModel
     @State private var keepers: [String: String] = [:]
     @State private var selectedIDs: Set<String> = []
     @State private var showBatchConfirmation = false

@@ -72,3 +72,10 @@ No Apple Developer / App Store Connect credentials, certificates or provisioning
 This archive, unsigned .app and unsigned .ipa cannot be installed directly through the iPhone Files application.
 Never send private keys, provisioning passwords or Apple ID credentials in chat.
 For TestFlight: sign the final build with an Apple Developer Program team, archive using Xcode 26 or later (Apple's current 2026 App Store Connect requirements), upload via Xcode/App Store Connect and invite the device owner.
+
+
+## QA 0.3 · переработанный сканер
+
+Главный экран — одна большая кнопка «СКАНИРОВАТЬ»: запрос доступа к медиатеке и сканирование ранее разрешённых папок. Фото: сканирование всей разрешённой библиотеки, групповое выделение копий, выбор сохраняемого оригинала, полноэкранный просмотр фото/видео, массовое удаление после повторной проверки всех байтов и системного подтверждения. Файлы: выбор нескольких папок, рекурсивный поиск между ними, Quick Look, пути к объектам, пакетная разметка и экспорт отчёта (без удаления). Сканирование всех системных и чужих файлов iOS запрещает.
+
+**Статус:** исходники. Подписание/TestFlight и тест на физическом iPhone не выполнены; неподписанная сборка непригодна для прямой установки.
