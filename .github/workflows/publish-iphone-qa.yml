@@ -12,6 +12,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Download IPA from previously successful Apple QA run
         uses: actions/download-artifact@v4
         with:
