@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f7ff">
+<title>ONECOPY — установка iPhone через SideInstaller</title>
+<meta name="description" content="Официальный IPA ONECOPY и запуск установки через SideInstaller.">
+<link rel="icon" href="./assets/icon.svg">
+<style>
+:root{color-scheme:light;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,system-ui,sans-serif;color:#17213e;background:#f5f7ff}*{box-sizing:border-box}body{margin:0;padding:24px 16px 60px}main{max-width:640px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;padding:6px 0 32px;gap:10px}.brand{font-weight:900;color:#334be8;letter-spacing:.5px}.tag{font-size:12px;color:#68799c;font-weight:700}h1{font-size:clamp(30px,7vw,44px);line-height:1.12;letter-spacing:-1.2px;margin:0 0 12px}p{line-height:1.6;color:#566580}.intro{font-size:15px;margin-bottom:24px}.panel{background:#fff;border:1px solid #e4e9fb;border-radius:24px;padding:24px;margin:14px 0;box-shadow:0 10px 28px rgba(34,55,100,.045)}h2{font-size:19px;margin:0 0 12px}h3{font-size:15px;margin:0 0 7px}a.btn{display:block;text-align:center;text-decoration:none;background:#3e53ec;color:#fff;border-radius:16px;font-weight:800;padding:18px 12px;line-height:1.4;margin:16px 0 8px}a.btn.secondary{background:#f1f3ff;color:#344ac9;border:1px solid #dfe5ff}.muted{font-size:13px;color:#68758f}.warning{background:#fff7ed;border:1px solid #f3dab8;border-radius:18px;padding:16px 18px;color:#86582c;font-size:13px;line-height:1.55}.warning strong{color:#744114}ol{padding-left:22px;line-height:1.7;color:#53627d}li{margin:8px 0}code{font-size:11px;word-break:break-all;color:#3349a7;background:#f2f4ff;padding:3px 5px;border-radius:5px}a{color:#3554c7;overflow-wrap:anywhere}.small{font-size:12px}.label{display:block;font-size:11px;font-weight:850;color:#6a7ea0;letter-spacing:1.1px;text-transform:uppercase;margin-bottom:9px}footer{font-size:12px;color:#94a0b7;margin-top:25px}
+</style>
+</head>
+<body><main>
+<header class="top"><div class="brand">◈ ONECOPY</div><div class="tag">iPhone · нативная версия 0.3 QA</div></header>
+<h1>Установка ONECOPY<br>через SideInstaller</h1>
+<p class="intro">Без Mac и без платного аккаунта Apple. Здесь находится <strong>оригинальный IPA из твоего GitHub</strong> и кнопка его импорта через SideInstaller.</p>
+<div class="warning"><strong>Важный статус:</strong> на последней проверенной официальной странице SideInstaller было <strong>0 действующих общих сертификатов</strong>. Пока не появится доступный сертификат, стандартная установка самого SideInstaller может не сработать. Эта страница не обходит ограничение Apple и не устанавливает приложение сама.</div>
+<section class="panel">
+<span class="label">Шаг 1</span>
+<h2>Установи SideInstaller</h2>
+<ol>
+<li>Открой <a href="https://sideinstaller.net/" rel="noopener noreferrer">официальный сайт SideInstaller</a> в Safari и проверь, появился ли действующий сертификат.</li>
+<li>Если сертификатов всё ещё 0 — не устанавливай сомнительные зеркала и профили. Можно ознакомиться с <a href="https://github.com/FrizzleM/SideInstaller/blob/main/ish/README.md" rel="noopener noreferrer">резервным способом через iSH</a>, но разработчик прямо предупреждает, что он не полностью проверен на физических устройствах.</li>
+<li>Если установщик доступен, следуй официальным инструкциям по DNS/VPN и профилю. Сначала оцени риски: профили меняют сетевые настройки, сертификаты могут быть отозваны.</li>
+</ol>
+<a class="btn secondary" href="https://sideinstaller.net/" rel="noopener noreferrer">Открыть официальный SideInstaller</a>
+<p class="muted">Только сайт sideinstaller.net или репозиторий FrizzleM/SideInstaller. Не вводи Apple ID на сторонних поддельных страницах.</p>
+</section>
+<section class="panel">
+<span class="label">Шаг 2</span>
+<h2>Установи ONECOPY</h2>
+<p>Когда SideInstaller уже установлен и открылся на iPhone, нажми кнопку ниже. Она передаст программе адрес нашего оригинального IPA. Подтверди установку внутри SideInstaller.</p>
+<a class="btn" href="sideinstaller://install?url=https%3A%2F%2Fgithub.com%2Frogozian%2Fonecopy%2Freleases%2Fdownload%2Fios-qa-0.3%2FONECOPY-iPhone-UNSIGNED-NOT-INSTALLABLE.ipa">Установить ONECOPY через SideInstaller</a>
+<p class="muted">Если кнопка ничего не делает, SideInstaller отсутствует или не зарегистрировал ссылку. В этом случае скачай IPA ниже и выбери в SideInstaller «Custom IPA → Import».</p>
+<a class="btn secondary" href="https://github.com/rogozian/onecopy/releases/download/ios-qa-0.3/ONECOPY-iPhone-UNSIGNED-NOT-INSTALLABLE.ipa" rel="noopener noreferrer">Скачать оригинальный IPA</a>
+<p class="small">Оригинал: <a href="https://github.com/rogozian/onecopy/releases/tag/ios-qa-0.3" rel="noopener noreferrer">GitHub Releases · ONECOPY iOS 0.3 QA</a>.</p>
+</section>
+<section class="panel">
+<span class="label">После установки</span>
+<h2>Запуск и разрешения</h2>
+<ol><li>Открой ONECOPY на iPhone.</li><li>Разреши доступ ко всей медиатеке «Фото», если хочешь проверить всю доступную медиатеку.</li><li>В разделе «Файлы» добавь папки, которые программа должна проверять.</li><li>Нажми «СКАНИРОВАТЬ», затем проверь найденные группы.</li></ol>
+<div class="warning">ONECOPY 0.3 — тестовая сборка: запуск в симуляторе проверен, а безопасное массовое удаление на реальном iPhone — нет. Не удаляй важные оригиналы. Ни одно обычное iOS-приложение не может читать все системные папки телефона.</div>
+</section>
+<footer>ONECOPY · исходники и IPA в <a href="https://github.com/rogozian/onecopy">твоём GitHub</a> · никакого Higgsfield</footer>
+</main></body></html>
