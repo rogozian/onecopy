@@ -1,0 +1,86 @@
+name: ONECOPY macOS — universal DMG release
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-macos.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  release:
+    name: Build, validate and release ONECOPY macOS
+    runs-on: macos-15
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build universal application and DMG (includes full Swift tests)
+        run: |
+          cd macos
+          bash scripts/package-macos.sh
+      - name: Validate app, architecture, signature and DMG contents
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd macos/dist
+          /usr/bin/hdiutil verify ONECOPY-macOS-universal-unsigned-QA.dmg
+          /usr/bin/codesign --verify --strict --verbose=2 ONECOPY.app
+          /usr/bin/lipo -archs ONECOPY.app/Contents/MacOS/OneCopy | grep -q arm64
+          /usr/bin/lipo -archs ONECOPY.app/Contents/MacOS/OneCopy | grep -q x86_64
+          /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' ONECOPY.app/Contents/Info.plist | grep -Fx app.onecopy.macos
+          /usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' ONECOPY.app/Contents/Info.plist | grep -Fx 0.4.0
+          MOUNT="$RUNNER_TEMP/onecopy-dmg-validation"
+          mkdir -p "$MOUNT"
+          /usr/bin/hdiutil attach -nobrowse -readonly -mountpoint "$MOUNT" ONECOPY-macOS-universal-unsigned-QA.dmg
+          test -x "$MOUNT/ONECOPY.app/Contents/MacOS/OneCopy"
+          test -L "$MOUNT/Applications"
+          /usr/bin/hdiutil detach "$MOUNT"
+      - name: Create release package with checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd macos/dist
+          cp ONECOPY-macOS-universal-unsigned-QA.dmg ONECOPY-macOS-0.4.0-universal-QA.dmg
+          cp ONECOPY-macOS-universal-QA.zip ONECOPY-macOS-0.4.0-universal-QA.zip
+          shasum -a 256 ONECOPY-macOS-0.4.0-universal-QA.dmg ONECOPY-macOS-0.4.0-universal-QA.zip > ONECOPY-macOS-0.4.0-SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ONECOPY-macOS-0.4.0-universal-QA
+          path: |
+            macos/dist/ONECOPY-macOS-0.4.0-universal-QA.dmg
+            macos/dist/ONECOPY-macOS-0.4.0-universal-QA.zip
+            macos/dist/ONECOPY-macOS-0.4.0-SHA256SUMS.txt
+          if-no-files-found: error
+      - name: Publish direct DMG on GitHub Releases
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cd macos/dist
+          cat > release-notes.md <<'EOF'
+          ## ONECOPY for macOS 0.4.0 — test build (not notarized)
+          - Universal macOS 13+ build for Apple Silicon and Intel.
+          - Native SwiftUI interface, local exact-byte duplicate detection in selected folders.
+          - Review each group, choose which file to keep. No automatic deletion.
+          - Before moving any copy to Trash: revalidate contents, identity, permissions and metadata. Trash is never emptied automatically.
+          - History and restoration (where original file path is available).
+          - Files never leave the Mac. Some system, cloud, app bundle and protected locations are excluded.
+
+          ### Install
+          1. Download the DMG and open it.
+          2. Drag ONECOPY.app into Applications.
+          3. This build is **ad-hoc signed, not Developer ID signed and NOT notarized**. Gatekeeper can block launch. If you trust this exact project build, use **System Settings → Privacy & Security → Open Anyway** after the initial blocked launch. Do not disable Gatekeeper globally.
+          4. Start with a disposable test folder and verify results before using the Trash on important files.
+
+          ### Testing and limitations
+          macOS GitHub Actions runs Swift tests, builds both architectures, validates the application, verifies the disk image, and mounts it to check contents. Physical-user-Mac testing, Apple Developer ID signing and notarization have **not** been performed. This QA build is not a fully verified production release.
+          EOF
+          gh release create macos-0.4.0 \
+            ONECOPY-macOS-0.4.0-universal-QA.dmg \
+            ONECOPY-macOS-0.4.0-universal-QA.zip \
+            ONECOPY-macOS-0.4.0-SHA256SUMS.txt \
+            --target "$GITHUB_SHA" \
+            --title 'ONECOPY macOS 0.4.0 — Universal QA DMG' \
+            --notes-file release-notes.md \
+            --prerelease
