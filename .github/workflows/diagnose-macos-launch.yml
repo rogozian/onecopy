@@ -1,0 +1,61 @@
+name: ONECOPY macOS — launch diagnostics
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/diagnose-macos-launch.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: macos-15
+    timeout-minutes: 18
+    steps:
+      - name: Download released ONECOPY DMG/ZIP
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/onecopy-test"
+          cd "$RUNNER_TEMP/onecopy-test"
+          gh release download macos-0.4.0 --repo "$GITHUB_REPOSITORY" --pattern '*.zip' --pattern '*.dmg'
+          unzip -q ONECOPY-macOS-0.4.0-universal-QA.zip
+          file ONECOPY.app/Contents/MacOS/OneCopy
+          codesign -dvvv ONECOPY.app 2>&1 || true
+          otool -L ONECOPY.app/Contents/MacOS/OneCopy || true
+          spctl --assess --verbose=4 ONECOPY.app 2>&1 || true
+      - name: Test direct launch, capture console errors and crash reports
+        shell: bash
+        run: |
+          set -uo pipefail
+          cd "$RUNNER_TEMP/onecopy-test"
+          echo 'Trying binary directly...'
+          ./ONECOPY.app/Contents/MacOS/OneCopy > app-stdout.log 2> app-stderr.log &
+          PID=$!
+          echo "Spawned PID $PID"
+          sleep 12
+          if kill -0 "$PID" 2>/dev/null; then
+            echo 'ONECOPY_PROCESS_STILL_RUNNING=YES'
+            kill "$PID"
+            wait "$PID" || true
+          else
+            wait "$PID"
+            EXIT=$?
+            echo "ONECOPY_PROCESS_STILL_RUNNING=NO; EXIT=$EXIT"
+          fi
+          echo 'STDOUT:'; cat app-stdout.log
+          echo 'STDERR:'; cat app-stderr.log
+          echo 'Crash reports:'
+          find ~/Library/Logs/DiagnosticReports -maxdepth 1 -type f \( -iname '*OneCopy*' -o -iname '*ONECOPY*' \) -print -exec head -c 4500 {} \; 2>/dev/null || true
+          echo 'Try LaunchServices open -n:'
+          open -n ./ONECOPY.app 2>&1 || true
+          sleep 8
+          ps aux | grep '[O]neCopy' || true
+          echo 'Recent macOS errors:'
+          log show --last 2m --style compact --predicate 'process == "OneCopy" OR eventMessage CONTAINS[c] "app.onecopy.macos"' 2>/dev/null | tail -n 120 || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ONECOPY-launch-diagnostics
+          path: |
+            ${{ runner.temp }}/onecopy-test/app-stdout.log
+            ${{ runner.temp }}/onecopy-test/app-stderr.log
