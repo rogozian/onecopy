@@ -28,6 +28,8 @@ mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 ARCHES="$(/usr/bin/lipo -archs "$APP/Contents/MacOS/OneCopy")"
 [[ " $ARCHES " == *" arm64 "* && " $ARCHES " == *" x86_64 "* ]] || { echo "Not a universal binary: $ARCHES" >&2; exit 1; }
 cp resources/Info.plist "$APP/Contents/Info.plist"
+/usr/libexec/PlistBuddy -c 'Print :NSPrincipalClass' "$APP/Contents/Info.plist" | grep -Fx NSApplication
+/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$APP/Contents/Info.plist" | grep -Fx 0.4.1
 ICONSET="$OUT/ONECOPY.iconset"
 rm -rf "$ICONSET"
 mkdir -p "$ICONSET"
@@ -37,8 +39,9 @@ for size in 16 32 128 256 512; do
   /usr/bin/sips -s format png -z "$dbl" "$dbl" resources/ONECOPY-icon-1024.png --out "$ICONSET/icon_${size}x${size}@2x.png" >/dev/null
 done
 /usr/bin/iconutil --convert icns "$ICONSET" --output "$APP/Contents/Resources/ONECOPY.icns"
-# Ad-hoc signature is for test builds, not a Developer ID signature.
-/usr/bin/codesign --force --options runtime --sign - "$APP"
+# Ad-hoc signature is for test builds, not Developer ID. Do not enable
+# Hardened Runtime without a Developer ID team; this QA app is not notarized.
+/usr/bin/codesign --force --sign - "$APP"
 /usr/bin/codesign --verify --strict --verbose=2 "$APP"
 STAGE="$OUT/dmg-stage"
 rm -rf "$STAGE"
