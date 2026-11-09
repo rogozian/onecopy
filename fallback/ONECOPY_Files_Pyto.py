@@ -227,8 +227,10 @@ def main():
         print('\nОтчёт сохранён:', destination)
         try:
             import file_system as fs
-            if input('Показать системное меню «Поделиться» для отчёта? + и Enter: ').strip() == '+':
-                fs.share_files([destination])
+            # Pyto share_files expects one path (str), never a list.
+            # Open the share sheet automatically: Pyto's console may not reliably
+            # deliver interactive input after a completed script.
+            fs.share_files(destination)
         except (ImportError, Exception) as exc:
             print('CSV сохранён, но меню «Поделиться» не открылось:', exc)
     except (OSError, ValueError) as exc:
