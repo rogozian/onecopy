@@ -35,7 +35,7 @@ jobs:
           test -x "$MOUNT/ONECOPY.app/Contents/MacOS/OneCopy"
           test -L "$MOUNT/Applications"
           /usr/bin/hdiutil detach "$MOUNT"
-      - name: Smoke test: launch app and check it stays running
+      - name: 'Smoke test - launch app and check it stays running'
         shell: bash
         run: |
           set -euo pipefail
